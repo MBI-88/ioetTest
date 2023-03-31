@@ -1,2 +1,4 @@
 ioetEnv
 exercise.txt
+acme/__pycache__/
+*.pyc
