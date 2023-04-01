@@ -7,6 +7,7 @@ class ACME():
         self.moneyToPay:dict[str,int] = {}
     
     def handlerData(self,payRange:list,name:str,start:datetime,end:datetime) -> None:
+        try:
             for i in range(len(payRange)):
                 if start >= payRange[i][0] and start > payRange[i][1]:
                         continue
@@ -27,9 +28,10 @@ class ACME():
                             else:
                                 hours = payRange[x][1].hour - payRange[x][0].hour
                                 self.moneyToPay[name] += hours * payRange[x][2]
-        
-        
-    
+        except ValueError as f:
+            print(f"Error data {f}")
+            exit(1)
+            
     def proccessData(self,data_employee:list[str]) -> None:
           """
             This method return the payments for employees.\n
