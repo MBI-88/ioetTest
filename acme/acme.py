@@ -7,6 +7,9 @@ class ACME():
         self.moneyToPay:dict[str,int] = {}
     
     def handlerData(self,payRange:list,name:str,start:datetime,end:datetime) -> None:
+        """
+            This method saves information about workers.
+        """
         try:
             for i in range(len(payRange)):
                 if start >= payRange[i][0] and start > payRange[i][1]:
@@ -14,19 +17,23 @@ class ACME():
                 else:
                     if start >= payRange[i][0] and start <= payRange[i][1] and end <= payRange[i][1]:
                         hours = end.hour - start.hour
+                        hours = abs(hours)
                         self.moneyToPay[name] += hours * payRange[i][2]
                     elif start >= payRange[i][0] and start <= payRange[i][1] and end > payRange[i][1]:
                         hours = payRange[i][1].hour - start.hour
                         hours = hours if hours != 0 else 1
+                        hours = abs(hours)
                         self.moneyToPay[name] += hours * payRange[i][2]
                         for x in range(len(payRange[i+1:])):
                             if end >= payRange[x][0] and end <= payRange[x][1]:
                                 hours = end.hour - payRange[x][0].hour
                                 hours = hours if hours != 0 else 1
+                                hours = abs(hours)
                                 self.moneyToPay[name] += hours * \
                                                     payRange[x][2]
                             else:
                                 hours = payRange[x][1].hour - payRange[x][0].hour
+                                hours = abs(hours)
                                 self.moneyToPay[name] += hours * payRange[x][2]
         except ValueError as f:
             print(f"Error data {f}")
