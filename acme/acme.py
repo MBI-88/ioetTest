@@ -6,6 +6,30 @@ class ACME():
     def __init__(self) -> None:
         self.moneyToPay:dict[str,int] = {}
     
+    def handlerData(self,payRange:list,name:str,start:datetime,end:datetime) -> None:
+            for i in range(len(payRange)):
+                if start >= payRange[i][0] and start > payRange[i][1]:
+                        continue
+                else:
+                    if start >= payRange[i][0] and start <= payRange[i][1] and end <= payRange[i][1]:
+                        hours = end.hour - start.hour
+                        self.moneyToPay[name] += hours * payRange[i][2]
+                    elif start >= payRange[i][0] and start <= payRange[i][1] and end > payRange[i][1]:
+                        hours = payRange[i][1].hour - start.hour
+                        hours = hours if hours != 0 else 1
+                        self.moneyToPay[name] += hours * payRange[i][2]
+                        for x in range(len(payRange[i+1:])):
+                            if end >= payRange[x][0] and end <= payRange[x][1]:
+                                hours = end.hour - payRange[x][0].hour
+                                hours = hours if hours != 0 else 1
+                                self.moneyToPay[name] += hours * \
+                                                    payRange[x][2]
+                            else:
+                                hours = payRange[x][1].hour - payRange[x][0].hour
+                                self.moneyToPay[name] += hours * payRange[x][2]
+        
+        
+    
     def proccessData(self,data_employee:list[str]) -> None:
           """
             This method return the payments for employees.\n
@@ -27,61 +51,14 @@ class ACME():
                     timeRange = dt[2:].split("-")
                     start = datetime.strptime(timeRange[0], "%H:%M").time()
                     end = datetime.strptime(timeRange[1], "%H:%M").time()
-
                     match day:
                         case "MO" | "TU" | "WE" | "TH" | "FR":
                             payRange = payKeys["Week"]
-                            for i in range(len(payRange)):
-                                if start >= payRange[i][0] and start > payRange[i][1]:
-                                    continue
-                                else:
-                                    if start >= payRange[i][0] and start <= payRange[i][1] and end <= payRange[i][1]:
-                                        hours = end.hour - start.hour
-                                        self.moneyToPay[name] += hours * payRange[i][2]
-
-                                    elif start >= payRange[i][0] and start <= payRange[i][1] and end > payRange[i][1]:
-                                        hours = payRange[i][1].hour - start.hour
-                                        hours = hours if hours != 0 else 1
-                                        self.moneyToPay[name] += hours * payRange[i][2]
-
-                                        for x in range(len(payRange[i+1:])):
-                                            if end >= payRange[x][0] and end <= payRange[x][1]:
-                                                hours = end.hour - payRange[x][0].hour
-                                                hours = hours if hours != 0 else 1
-                                                self.moneyToPay[name] += hours * \
-                                                    payRange[x][2]
-                                            else:
-                                                hours = payRange[x][1].hour - \
-                                                    payRange[x][0].hour
-                                                self.moneyToPay[name] += hours * \
-                                                    payRange[x][2]
+                            self.handlerData(payRange,name,start,end)
 
                         case "SA" | "SU":
                             payRange = payKeys["Weekend"]
-                            for i in range(len(payRange)):
-                                if start >= payRange[i][0] and start > payRange[i][1]:
-                                    continue
-                                else:
-                                    if start >= payRange[i][0] and start <= payRange[i][1] and end <= payRange[i][1]:
-                                        hours = end.hour - start.hour
-                                        self.moneyToPay[name] += hours * payRange[i][2]
-
-                                    elif start >= payRange[i][0] and start <= payRange[i][1] and end > payRange[i][1]:
-                                        hours = payRange[i][1].hour - start.hour
-                                        hours = hours if hours != 0 else 1
-                                        self.moneyToPay[name] += hours * payRange[i][2]
-
-                                        for x in range(len(payRange[i+1:])):
-                                            if end >= payRange[x][0] and end <= payRange[x][1]:
-                                                hours = end.hour - payRange[x][0].hour
-                                                hours = hours if hours != 0 else 1
-                                                self.moneyToPay[name] += hours * \
-                                                    payRange[x][2]
-                                            else:
-                                                hours = payRange[x][1].hour - \
-                                                    payRange[x][0].hour
-                                                self.moneyToPay[name] += hours * \
-                                                    payRange[x][2]
+                            self.handlerData(payRange,name,start,end)
                         case _:
                             continue
             except ValueError as f:
