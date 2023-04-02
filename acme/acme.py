@@ -35,11 +35,11 @@ class ACME():
                                 hours = payRange[x][1].hour - payRange[x][0].hour
                                 hours = abs(hours)
                                 self.moneyToPay[name] += hours * payRange[x][2]
-        except ValueError as f:
+        except TypeError | ValueError as f:
             print(f"Error data {f}")
             exit(1)
             
-    def proccessData(self,data_employee:list[str]) -> None:
+    def processData(self,data_employee:list[str]) -> None:
           """
             This method return the payments for employees.\n
             The file must have this structure NAME=MO00:01-09:00,TU02:00-03:00,...\n
