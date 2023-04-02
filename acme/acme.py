@@ -35,8 +35,8 @@ class ACME():
                                 hours = payRange[x][1].hour - payRange[x][0].hour
                                 hours = abs(hours)
                                 self.moneyToPay[name] += hours * payRange[x][2]
-        except TypeError | ValueError as f:
-            print(f"Error data {f}")
+        except:
+            print("Error data")
             exit(1)
             
     def processData(self,data_employee:list[str]) -> None:
@@ -70,8 +70,8 @@ class ACME():
                             self.handlerData(payRange,name,start,end)
                         case _:
                             continue
-            except ValueError as f:
-                print(f"Error data {f}")
+            except:
+                print("Error data")
                 exit(1)
  
                     

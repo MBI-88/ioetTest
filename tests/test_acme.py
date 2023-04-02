@@ -64,7 +64,7 @@ class TestACME(unittest.TestCase):
         sample = acme.ACME()
         sample.moneyToPay[name] = 0
         ranges = datastruct.payKeys["Week"]
-        with self.assertRaises(TypeError):
+        with self.assertRaises(SystemExit):
             sample.handlerData(ranges, name, start, end)
 
 
