@@ -12,7 +12,7 @@ class ACME():
         """
         try:
             for i in range(len(payRange)):
-                if start >= payRange[i][0] and start > payRange[i][1]:
+                if start > payRange[i][1]:
                         continue
                 else:
                     if start >= payRange[i][0] and start <= payRange[i][1] and end <= payRange[i][1]:
