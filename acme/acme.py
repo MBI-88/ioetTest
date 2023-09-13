@@ -31,7 +31,7 @@ class ACME():
                                 hours = abs(hours)
                                 self.moneyToPay[name] += hours * \
                                                     payRange[x][2]
-                            else:
+                            else if  end >= payRange[x][1]:
                                 hours = payRange[x][1].hour - payRange[x][0].hour
                                 hours = abs(hours)
                                 self.moneyToPay[name] += hours * payRange[x][2]
